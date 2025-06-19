@@ -30,17 +30,7 @@ export default function ResumeForgePage() {
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
 
-  // Refs for animation targets
-  const headerRef = useRef<HTMLDivElement>(null);
-  const mainContentGridRef = useRef<HTMLDivElement>(null);
-  const testimonialsRef = useRef<HTMLDivElement>(null); // Already used for parallax
-  const footerWrapperRef = useRef<HTMLDivElement>(null);
-
-  // State for animation visibility
-  const [headerAnimated, setHeaderAnimated] = useState(false);
-  const [mainGridVisible, setMainGridVisible] = useState(false);
-  const [testimonialsSectionVisible, setTestimonialsSectionVisible] = useState(false);
-  const [footerVisible, setFooterVisible] = useState(false);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -55,56 +45,22 @@ export default function ResumeForgePage() {
   useEffect(() => {
     if (!isMounted) return;
 
-    // Animate header shortly after mount
-    const headerTimer = setTimeout(() => setHeaderAnimated(true), 50);
-
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (entry.target === mainContentGridRef.current) {
-              setMainGridVisible(true);
-            } else if (entry.target === testimonialsRef.current) {
-              setTestimonialsSectionVisible(true);
-            } else if (entry.target === footerWrapperRef.current) {
-              setFooterVisible(true);
-            }
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 } // Trigger when 10% of the element is visible
-    );
-
-    if (mainContentGridRef.current) observer.observe(mainContentGridRef.current);
-    if (testimonialsRef.current) observer.observe(testimonialsRef.current);
-    if (footerWrapperRef.current) observer.observe(footerWrapperRef.current);
-
-    // Parallax for testimonials (existing logic)
     const handleScrollEffects = () => {
       if (testimonialsRef.current) {
         const scrollY = window.scrollY;
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
-        // Apply parallax only if the section has been made visible by the IntersectionObserver
-        if (testimonialsSectionVisible) {
-            testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.25)}px)`;
-        } else {
-            // If not yet visible due to scroll animation, keep its animated transform or initial state
-            // The class-based animation for 'translate-y-10' or 'translate-y-0' will handle initial positioning.
-        }
+        testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.25)}px)`;
       }
     };
+
     window.addEventListener('scroll', handleScrollEffects);
-    if (isMounted) handleScrollEffects(); // Initial call after mount and if visible
+    handleScrollEffects(); // Initial call
 
     return () => {
-      clearTimeout(headerTimer);
-      observer.disconnect();
       window.removeEventListener('scroll', handleScrollEffects);
     };
-  }, [isMounted, testimonialsSectionVisible]); // Added testimonialsSectionVisible to re-evaluate parallax if needed
+  }, [isMounted]);
 
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
@@ -181,12 +137,9 @@ export default function ResumeForgePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-body">
       <header 
-        ref={headerRef}
         className={cn(
           `p-4 shadow-md bg-card border-b border-border sticky top-0 z-50`,
-          applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : '',
-          'transition-all duration-500 ease-out', // Base transition for header
-          headerAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5' // Conditional visibility
+          applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : ''
         )}
       >
         <div className="container mx-auto flex justify-between items-center">
@@ -208,11 +161,8 @@ export default function ResumeForgePage() {
       <div className="flex-grow flex flex-col">
         <main className={`container mx-auto p-4`}>
           <div 
-            ref={mainContentGridRef}
             className={cn(
-              "grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8",
-              "transition-all duration-700 ease-out delay-100", // Transition properties
-              mainGridVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10" // Start/end states
+              "grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8"
             )}
           >
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
@@ -247,19 +197,15 @@ export default function ResumeForgePage() {
         <div 
           ref={testimonialsRef} 
           className={cn(
-            "relative z-0", // Keep existing
-            "transition-all duration-700 ease-out delay-200", // Transition properties
-            testimonialsSectionVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10" // Start/end states
+            "relative z-0"
           )}
         > 
           <TestimonialsSection />
         </div>
         
         <div 
-          ref={footerWrapperRef}
           className={cn(
-            "transition-all duration-700 ease-out delay-300", // Transition properties
-            footerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10" // Start/end states
+            // Removed animation classes
           )}
         >
           <AppFooter />
