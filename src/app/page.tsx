@@ -48,7 +48,8 @@ export default function ResumeForgePage() {
         const scrollY = window.scrollY;
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
-        testimonialsRef.current.style.transform = `translateY(${transformValue}px)`;
+        // Ensure the element is not translated beyond its natural position upwards initially
+        testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.5)}px)`;
       }
     };
 
@@ -149,11 +150,9 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
-      {/* This div takes remaining space and will contain main, testimonials, and footer */}
-      <div className="flex-grow flex flex-col"> 
+      <div className="flex-grow flex flex-col pb-24"> {/* Added pb-24 for fixed footer */}
         <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
-            {/* Resume Form Section */}
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
               <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
                 <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
@@ -161,7 +160,6 @@ export default function ResumeForgePage() {
               </div>
             </section>
             
-            {/* Resume Preview Section */}
             <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
               <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
                 <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
@@ -184,13 +182,13 @@ export default function ResumeForgePage() {
           </div>
         </main>
         
-        {/* Testimonials Section - Wrapped in a div for parallax */}
         <div ref={testimonialsRef} className="relative z-0"> 
           <TestimonialsSection />
         </div>
         
-        <AppFooter /> {/* Footer is now here, within the flex-grow flex-col container */}
       </div>
+      <AppFooter />
     </div>
   );
 }
+
