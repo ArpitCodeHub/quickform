@@ -1,7 +1,7 @@
 
 "use client";
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react'; // Added useRef
+import { useEffect, useState, useRef } from 'react';
 import { useAppSettings } from '@/hooks/use-app-settings';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
@@ -28,7 +28,7 @@ export default function ResumeForgePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
-  const testimonialsRef = useRef<HTMLDivElement>(null); // Ref for parallax section
+  const testimonialsRef = useRef<HTMLDivElement>(null); 
 
   useEffect(() => {
     setIsMounted(true);
@@ -40,15 +40,12 @@ export default function ResumeForgePage() {
     }
   }, [user, authLoading, router, isMounted]);
 
-  // Parallax effect for TestimonialsSection
   useEffect(() => {
     if (!isMounted) return;
 
     const handleScroll = () => {
       if (testimonialsRef.current) {
         const scrollY = window.scrollY;
-        // Parallax factor: 0.8 means it scrolls at 80% of normal speed (appears slower)
-        // The transform makes up for the 20% "lag"
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
         testimonialsRef.current.style.transform = `translateY(${transformValue}px)`;
@@ -56,7 +53,6 @@ export default function ResumeForgePage() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Call once to set initial position if page is already scrolled
     handleScroll(); 
 
     return () => window.removeEventListener('scroll', handleScroll);
@@ -153,7 +149,7 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
-      <div className="flex-grow"> {/* Wrapper to push footer down */}
+      <div className="flex-grow"> 
         <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
@@ -183,7 +179,6 @@ export default function ResumeForgePage() {
             </section>
           </div>
         </main>
-        {/* Wrapper for parallax effect */}
         <div ref={testimonialsRef} className="relative z-0"> 
           <TestimonialsSection />
         </div>
