@@ -13,10 +13,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer, LogOut } from "lucide-react";
+import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer, LogOut, Info } from "lucide-react";
 import type { BaseTheme, ResumeTemplateKey } from '@/types/resume';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/use-auth';
+import Link from 'next/link';
 
 interface AppControlsProps {
   baseTheme: BaseTheme;
@@ -45,9 +46,9 @@ const AppControls: React.FC<AppControlsProps> = ({
   const { user, signOut, loading: authLoading } = useAuth();
 
   const handleResetData = () => {
-    if (window.confirm("Are you sure you want to reset all resume data? This action cannot be undone.")) {
+    if (window.confirm("Are you sure you want to reset all document data? This action cannot be undone.")) {
       onResetData();
-      toast({ title: "Data Reset", description: "Your resume data has been cleared." });
+      toast({ title: "Data Reset", description: "Your document data has been cleared." });
     }
   };
 
@@ -74,7 +75,6 @@ const AppControls: React.FC<AppControlsProps> = ({
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {/* Theme radio items are still here for explicit selection if desired, toggle button offers quicker access */}
           <DropdownMenuRadioGroup value={baseTheme} onValueChange={(value) => setBaseTheme(value as BaseTheme)}>
             <DropdownMenuRadioItem value="light" className="cursor-pointer">
               <Sun className="mr-2 h-4 w-4" /> Light Mode
@@ -92,7 +92,7 @@ const AppControls: React.FC<AppControlsProps> = ({
           </DropdownMenuCheckboxItem>
           
           <DropdownMenuSeparator />
-          <DropdownMenuLabel>Resume Template</DropdownMenuLabel>
+          <DropdownMenuLabel>Document Template</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={resumeTemplate} onValueChange={(value) => setResumeTemplate(value as ResumeTemplateKey)}>
             <DropdownMenuRadioItem value="classic" className="cursor-pointer">
@@ -101,6 +101,7 @@ const AppControls: React.FC<AppControlsProps> = ({
             <DropdownMenuRadioItem value="modern" className="cursor-pointer">
               <Palette className="mr-2 h-4 w-4" /> Modern
             </DropdownMenuRadioItem>
+            {/* Add other templates here if needed */}
           </DropdownMenuRadioGroup>
 
           <DropdownMenuSeparator />
@@ -116,6 +117,15 @@ const AppControls: React.FC<AppControlsProps> = ({
             <RefreshCcw className="mr-2 h-4 w-4" /> Reset All Data
           </DropdownMenuItem>
           
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>Information</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <Link href="/about">
+              <Info className="mr-2 h-4 w-4" /> About Us
+            </Link>
+          </DropdownMenuItem>
+
           {user && (
             <>
               <DropdownMenuSeparator />
