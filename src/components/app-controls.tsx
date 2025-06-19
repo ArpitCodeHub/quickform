@@ -66,6 +66,11 @@ const AppControls: React.FC<AppControlsProps> = ({
       <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
         {baseTheme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
       </Button>
+      <Link href="/about" passHref>
+        <Button variant="outline" size="icon" aria-label="About QuickForm">
+          <Info className="h-5 w-5" />
+        </Button>
+      </Link>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" aria-label="App Settings">
@@ -117,15 +122,6 @@ const AppControls: React.FC<AppControlsProps> = ({
             <RefreshCcw className="mr-2 h-4 w-4" /> Reset All Data
           </DropdownMenuItem>
           
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>Information</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <Link href="/about">
-              <Info className="mr-2 h-4 w-4" /> About Us
-            </Link>
-          </DropdownMenuItem>
-
           {user && (
             <>
               <DropdownMenuSeparator />
