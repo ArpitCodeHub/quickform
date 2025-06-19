@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect, useCallback } from 'react';
 import type { ResumeData, BaseTheme, ResumeTemplateKey, PersonalDetails, ExperienceEntry, EducationEntry, Skill, CustomSection } from '@/types/resume';
@@ -26,7 +27,11 @@ export function useAppSettings() {
   const [baseTheme, setBaseThemeState] = useState<BaseTheme>('light');
   const [applyGlassmorphism, setApplyGlassmorphismState] = useState<boolean>(false);
   const [resumeTemplate, setResumeTemplateState] = useState<ResumeTemplateKey>('classic');
-  const [resumeData, setResumeDataState] = useState<ResumeData>(defaultResumeData);
+  const [resumeData, setResumeDataState] = useState<ResumeData>(() => {
+    // Initialize with a deep copy of defaultResumeData to avoid potential mutation issues
+    // localStorage will override this in the useEffect below if data exists
+    return JSON.parse(JSON.stringify(defaultResumeData));
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,17 +49,30 @@ export function useAppSettings() {
           if (storedTemplate) setResumeTemplateState(storedTemplate);
           if (storedData) {
             const parsedData = JSON.parse(storedData);
-            if (parsedData && typeof parsedData.personalDetails === 'object') {
+            // Basic validation for parsedData
+            if (parsedData && typeof parsedData === 'object' && parsedData.personalDetails) {
               setResumeDataState(parsedData);
             } else {
+              // If data is invalid, remove it and stick to default
               localStorage.removeItem('rf-resumeData');
+              setResumeDataState(JSON.parse(JSON.stringify(defaultResumeData)));
             }
+          } else {
+             // No stored data, ensure it's the default (already set by useState initialiser, but for clarity)
+             setResumeDataState(JSON.parse(JSON.stringify(defaultResumeData)));
           }
-          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error loading settings from localStorage:", error);
-        if (isMounted) setIsLoading(false); // Still finish loading state even if error
+        // In case of error, ensure app falls back to defaults and removes potentially corrupt data
+        localStorage.removeItem('rf-resumeData');
+        if (isMounted) {
+            setResumeDataState(JSON.parse(JSON.stringify(defaultResumeData)));
+        }
+      } finally {
+        if (isMounted) {
+            setIsLoading(false);
+        }
       }
     };
     
@@ -96,17 +114,22 @@ export function useAppSettings() {
   const setResumeData = useCallback((newData: ResumeData | ((prevData: ResumeData) => ResumeData)) => {
     setResumeDataState(prevData => {
       const updatedData = typeof newData === 'function' ? newData(prevData) : newData;
-      if (!isLoading) { // Only save if not in initial loading phase & after initial data has been set
-        localStorage.setItem('rf-resumeData', JSON.stringify(updatedData));
-      }
       return updatedData;
     });
-  }, [isLoading]);
+  }, []);
   
+  // Effect to persist resumeData to localStorage when it changes and not loading
+  useEffect(() => {
+    if (!isLoading) {
+      localStorage.setItem('rf-resumeData', JSON.stringify(resumeData));
+    }
+  }, [resumeData, isLoading]);
+
   const resetResumeData = useCallback(() => {
-    setResumeData(defaultResumeData);
-    localStorage.setItem('rf-resumeData', JSON.stringify(defaultResumeData)); // Ensure reset is persisted
-  }, [setResumeData]);
+    // Ensure a new object reference for defaultResumeData to trigger state update correctly
+    setResumeDataState(JSON.parse(JSON.stringify(defaultResumeData)));
+    // The useEffect above will handle persisting this reset state to localStorage
+  }, []);
 
   return {
     baseTheme, setBaseTheme,
