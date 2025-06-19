@@ -13,10 +13,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer, LogOut } from "lucide-react"; // Added LogOut icon
+import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer, LogOut } from "lucide-react";
 import type { BaseTheme, ResumeTemplateKey } from '@/types/resume';
 import { useToast } from "@/hooks/use-toast";
-import { useAuth } from '@/hooks/use-auth'; // Import useAuth
+import { useAuth } from '@/hooks/use-auth';
 
 interface AppControlsProps {
   baseTheme: BaseTheme;
@@ -42,7 +42,7 @@ const AppControls: React.FC<AppControlsProps> = ({
   onResetData,
 }) => {
   const { toast } = useToast();
-  const { user, signOut, loading: authLoading } = useAuth(); // Get user and signOut from useAuth
+  const { user, signOut, loading: authLoading } = useAuth();
 
   const handleResetData = () => {
     if (window.confirm("Are you sure you want to reset all resume data? This action cannot be undone.")) {
@@ -55,9 +55,16 @@ const AppControls: React.FC<AppControlsProps> = ({
     await signOut();
     toast({ title: "Signed Out", description: "You have been successfully signed out." });
   };
+
+  const toggleTheme = () => {
+    setBaseTheme(baseTheme === 'light' ? 'dark' : 'light');
+  };
   
   return (
     <div className="flex items-center gap-2">
+      <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+        {baseTheme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" aria-label="App Settings">
@@ -67,6 +74,7 @@ const AppControls: React.FC<AppControlsProps> = ({
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel>Appearance</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          {/* Theme radio items are still here for explicit selection if desired, toggle button offers quicker access */}
           <DropdownMenuRadioGroup value={baseTheme} onValueChange={(value) => setBaseTheme(value as BaseTheme)}>
             <DropdownMenuRadioItem value="light" className="cursor-pointer">
               <Sun className="mr-2 h-4 w-4" /> Light Mode
@@ -98,7 +106,6 @@ const AppControls: React.FC<AppControlsProps> = ({
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {/* These export buttons are now duplicated below the preview as per request, keeping them here as well for quick access */}
           <DropdownMenuItem onSelect={onExportHTML} className="cursor-pointer">
             <Download className="mr-2 h-4 w-4" /> Export as HTML
           </DropdownMenuItem>
