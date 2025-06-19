@@ -24,7 +24,7 @@ export const defaultResumeData: ResumeData = {
 };
 
 export function useAppSettings() {
-  const [baseTheme, setBaseThemeState] = useState<BaseTheme>('light');
+  const [baseTheme, setBaseThemeState] = useState<BaseTheme>('dark'); // Changed default to 'dark'
   const [applyGlassmorphism, setApplyGlassmorphismState] = useState<boolean>(false);
   const [resumeTemplate, setResumeTemplateState] = useState<ResumeTemplateKey>('classic');
   const [resumeData, setResumeDataState] = useState<ResumeData>(() => {
@@ -45,6 +45,7 @@ export function useAppSettings() {
 
         if (isMounted) {
           if (storedBaseTheme) setBaseThemeState(storedBaseTheme);
+          else setBaseThemeState('dark'); // Ensure default is dark if nothing in localStorage
           if (storedGlass) setApplyGlassmorphismState(storedGlass === 'true');
           if (storedTemplate) setResumeTemplateState(storedTemplate);
           if (storedData) {
