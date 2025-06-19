@@ -32,11 +32,11 @@ const ClassicTemplate: React.FC<TemplateProps> = ({ data }) => {
 
 
   return (
-    <div className="p-2 md:p-4 bg-white text-gray-800 font-body print:p-0 print:m-0 print:shadow-none print:border-none" style={{ fontFamily: "'PT Sans', sans-serif" }}>
+    <div className="p-2 md:p-4 bg-white text-gray-800 font-body print:p-0 print:m-0 print:shadow-none print:border-none">
       {/* Header */}
       <header className="text-center mb-6">
-        <h1 className="text-4xl font-bold text-sky-800 font-headline" style={{ fontFamily: "'Poppins', sans-serif" }}>{personalDetails.fullName || "Your Name"}</h1>
-        {personalDetails.jobTitle && <p className="text-xl text-sky-600 font-headline" style={{ fontFamily: "'Poppins', sans-serif" }}>{personalDetails.jobTitle}</p>}
+        <h1 className="text-4xl font-bold text-sky-800 font-headline">{personalDetails.fullName || "Your Name"}</h1>
+        {personalDetails.jobTitle && <p className="text-xl text-sky-600 font-headline">{personalDetails.jobTitle}</p>}
         <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
           {personalDetails.email && <ContactIcon IconComponent={Mail} text={personalDetails.email} href={`mailto:${personalDetails.email}`} srText="Email" />}
           {personalDetails.phone && <ContactIcon IconComponent={Phone} text={personalDetails.phone} srText="Phone" />}

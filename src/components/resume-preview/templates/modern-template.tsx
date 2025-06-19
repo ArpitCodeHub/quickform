@@ -33,11 +33,11 @@ const ModernTemplate: React.FC<TemplateProps> = ({ data }) => {
   );
 
   return (
-    <div className="p-2 md:p-4 bg-white text-gray-700 font-body print:p-0 print:m-0 print:shadow-none print:border-none" style={{ fontFamily: "'PT Sans', sans-serif" }}>
+    <div className="p-2 md:p-4 bg-white text-gray-700 font-body print:p-0 print:m-0 print:shadow-none print:border-none">
       {/* Header */}
       <header className="mb-6 p-4 bg-primary/10 rounded-lg">
-        <h1 className="text-3xl font-bold text-primary font-headline" style={{ fontFamily: "'Poppins', sans-serif" }}>{personalDetails.fullName || "Your Name"}</h1>
-        {personalDetails.jobTitle && <p className="text-lg text-accent font-medium font-headline" style={{ fontFamily: "'Poppins', sans-serif" }}>{personalDetails.jobTitle}</p>}
+        <h1 className="text-3xl font-bold text-primary font-headline">{personalDetails.fullName || "Your Name"}</h1>
+        {personalDetails.jobTitle && <p className="text-lg text-accent font-medium font-headline">{personalDetails.jobTitle}</p>}
         
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1.5 text-gray-600">
           {personalDetails.email && <ContactInfo icon={Mail} text={personalDetails.email} href={`mailto:${personalDetails.email}`} srText="Email"/>}

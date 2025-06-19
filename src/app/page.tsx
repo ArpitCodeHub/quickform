@@ -64,7 +64,6 @@ export default function ResumeForgePage() {
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
     `;
     
     const fullHtml = `<!DOCTYPE html>
@@ -75,7 +74,7 @@ export default function ResumeForgePage() {
       <title>${resumeData.personalDetails.fullName ? resumeData.personalDetails.fullName + ' - Resume' : 'My Resume'}</title>
       ${fontLinks}
       <style>
-        body { margin: 20px; font-family: 'PT Sans', sans-serif; background-color: #fff; color: #000; } 
+        body { margin: 20px; font-family: 'Poppins', sans-serif; background-color: #fff; color: #000; } 
         ${styles}
         #resume-preview-printable { width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
       </style>
