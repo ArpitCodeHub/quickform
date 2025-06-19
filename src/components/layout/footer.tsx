@@ -13,14 +13,14 @@ const AppFooter: React.FC = () => {
   }, []);
 
   if (currentYear === null) {
-    return <footer className="py-8 text-center border-t border-border bg-card text-muted-foreground fixed bottom-0 left-0 right-0 z-40"><div className="container mx-auto px-4">&nbsp;</div></footer>;
+    return <footer className="py-8 text-center border-t border-border bg-card text-muted-foreground"><div className="container mx-auto px-4">&nbsp;</div></footer>;
   }
 
   return (
     <footer 
       className={`py-8 text-center border-t 
                   ${applyGlassmorphism ? 'glassmorphic-panel !bg-opacity-70' : 'bg-card'} 
-                  text-muted-foreground fixed bottom-0 left-0 right-0 z-40`}
+                  text-muted-foreground`}
     >
       <div className="container mx-auto px-4">
         <p className="text-sm">

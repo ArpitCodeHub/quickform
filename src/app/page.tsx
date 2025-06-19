@@ -150,7 +150,7 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
-      <div className="flex-grow flex flex-col pb-24"> {/* Added pb-24 for fixed footer */}
+      <div className="flex-grow flex flex-col"> {/* Removed pb-24 */}
         <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
