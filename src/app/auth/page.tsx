@@ -10,9 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, Sun, Moon } from 'lucide-react'; // Added Sun and Moon icons
+import { Loader2, Sun, Moon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useAppSettings } from '@/hooks/use-app-settings'; // Import useAppSettings
+import { useAppSettings } from '@/hooks/use-app-settings';
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ export default function AuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { user, signIn, signUp, loading: authLoading, error: authError, clearError } = useAuth();
-  const { baseTheme, setBaseTheme } = useAppSettings(); // Get theme settings
+  const { baseTheme, setBaseTheme } = useAppSettings();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -80,8 +80,8 @@ export default function AuthPage() {
           <TabsTrigger value="login">Login</TabsTrigger>
           <TabsTrigger value="signup">Sign Up</TabsTrigger>
         </TabsList>
-        <TabsContent value="login">
-          <Card className="shadow-2xl">
+        <TabsContent value="login" className="data-[state=active]:animate-in data-[state=active]:fade-in-90 duration-300">
+          <Card className="shadow-2xl transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-primary/30 dark:hover:shadow-primary/20">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-primary">Welcome Back!</CardTitle>
               <CardDescription>Enter your credentials to access your account.</CardDescription>
@@ -119,8 +119,8 @@ export default function AuthPage() {
             </form>
           </Card>
         </TabsContent>
-        <TabsContent value="signup">
-          <Card className="shadow-2xl">
+        <TabsContent value="signup" className="data-[state=active]:animate-in data-[state=active]:fade-in-90 duration-300">
+          <Card className="shadow-2xl transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-primary/30 dark:hover:shadow-primary/20">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-primary">Create an Account</CardTitle>
               <CardDescription>Fill in the details to get started.</CardDescription>

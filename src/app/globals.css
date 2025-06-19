@@ -90,12 +90,15 @@
   border-width: 1px;
   border-color: hsl(var(--border) / 0.2);
   box-shadow: 0 4px 20px 0 hsl(var(--primary) / 0.1);
+  transition-property: background-color, border-color, box-shadow, backdrop-filter, -webkit-backdrop-filter;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
 }
 
 .dark.glassmorphism-active .glassmorphic-panel {
   background-color: hsl(var(--card) / 0.5) !important;
   border-color: hsl(var(--border) / 0.3);
-   box-shadow: 0 4px 20px 0 hsl(var(--primary) / 0.05);
+  box-shadow: 0 4px 20px 0 hsl(var(--primary) / 0.05);
 }
 
 
@@ -120,25 +123,23 @@
     height: auto;
     margin: 0 !important;
     padding: 0 !important;
-    background-color: white !important; /* Ensure printable background is white */
-    color: black !important; /* Ensure printable text is black */
+    background-color: white !important; 
+    color: black !important; 
   }
-  /* Hide elements not meant for print within the preview if any */
   .no-print {
     display: none !important;
   }
 }
 
-/* Custom Scrollbar Styles */
 .scrollbar-thin::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-.scrollbar-thumb-primary\/50::-webkit-scrollbar-thumb { /* Note: class name in HTML is scrollbar-thumb-primary/50 */
+.scrollbar-thumb-primary\/50::-webkit-scrollbar-thumb { 
   background-color: hsl(var(--primary) / 0.5);
   border-radius: 4px;
 }
-.scrollbar-track-primary\/10::-webkit-scrollbar-track { /* Note: class name in HTML is scrollbar-track-primary/10 */
+.scrollbar-track-primary\/10::-webkit-scrollbar-track { 
   background-color: hsl(var(--primary) / 0.1);
   border-radius: 4px;
 }
