@@ -29,7 +29,6 @@ export default function ResumeForgePage() {
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
   const testimonialsRef = useRef<HTMLDivElement>(null);
-  const [isPageScrolled, setIsPageScrolled] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -50,14 +49,9 @@ export default function ResumeForgePage() {
         const scrollY = window.scrollY;
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
-        testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.5)}px)`;
-      }
-
-      // Blur effect for scrolled page
-      if (window.scrollY > 10) {
-        setIsPageScrolled(true);
-      } else {
-        setIsPageScrolled(false);
+        // Ensure transformValue is not too large to prevent section from disappearing too quickly
+        // Adjusted to be less aggressive, ensuring it doesn't move out of view too fast
+        testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.25)}px)`;
       }
     };
 
@@ -139,16 +133,12 @@ export default function ResumeForgePage() {
     );
   }
   
-  const blurClass = isPageScrolled ? 'filter blur-sm' : 'filter-none';
-  const transitionClass = 'transition-all duration-300 ease-in-out';
-
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-body">
       <header 
         className={`p-4 shadow-md bg-card border-b border-border sticky top-0 z-50 
                    ${applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : ''} 
-                   transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}
-                   ${blurClass} ${transitionClass}`}
+                   transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}
       >
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-headline font-bold text-primary">QuickForm</h1>
@@ -198,12 +188,12 @@ export default function ResumeForgePage() {
           </div>
         </main>
         
-        <div ref={testimonialsRef} className={`relative z-0 ${blurClass} ${transitionClass}`}> 
+        <div ref={testimonialsRef} className="relative z-0"> 
           <TestimonialsSection />
         </div>
         
+        <AppFooter />
       </div>
-      <AppFooter isPageScrolled={isPageScrolled} />
     </div>
   );
 }
