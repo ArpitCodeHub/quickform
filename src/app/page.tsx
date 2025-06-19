@@ -2,7 +2,7 @@
 "use client";
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useAppSettings, defaultResumeData } from '@/hooks/use-app-settings';
+import { useAppSettings } from '@/hooks/use-app-settings';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import ResumeForm from '@/components/resume-form/resume-form';
@@ -11,6 +11,8 @@ import AppControls from '@/components/app-controls';
 import { Loader2, Download, Printer } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
+import TestimonialsSection from '@/components/testimonials'; // Added import
+import AppFooter from '@/components/layout/footer'; // Added import
 
 export default function ResumeForgePage() {
   const {
@@ -128,33 +130,40 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
-      <main className={`flex-grow container mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
-        <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
-          <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-            <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
-            <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
+      <div className="flex-grow"> {/* Wrapper to push footer down */}
+        <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
+            <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
+              <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+                <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
+                <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
+              </div>
+            </section>
+            <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
+              <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+                <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
+                <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
+              </div>
+              <div className={`mt-4 p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+                <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Document</h3>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button onClick={handleExportHTML} variant="outline" className="flex-1">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download HTML
+                  </Button>
+                  <Button onClick={handleExportPDF} variant="outline" className="flex-1">
+                    <Printer className="mr-2 h-4 w-4" />
+                    Save as PDF
+                  </Button>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
-        <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
-          <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-            <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
-            <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
-          </div>
-          <div className={`mt-4 p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-            <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Document</h3>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button onClick={handleExportHTML} variant="outline" className="flex-1">
-                <Download className="mr-2 h-4 w-4" />
-                Download HTML
-              </Button>
-              <Button onClick={handleExportPDF} variant="outline" className="flex-1">
-                <Printer className="mr-2 h-4 w-4" />
-                Save as PDF
-              </Button>
-            </div>
-          </div>
-        </section>
-      </main>
+        </main>
+        <TestimonialsSection />
+      </div>
+      
+      <AppFooter />
     </div>
   );
 }
