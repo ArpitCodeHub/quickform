@@ -76,20 +76,19 @@ const AppControls: React.FC<AppControlsProps> = ({
           </TooltipContent>
         </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link href="/about" passHref legacyBehavior>
-              {/* legacyBehavior ensures Link passes props correctly to Button for <a> wrapping */}
-              {/* Button should not have asChild here, it's the content of the Link's <a> */}
-              <Button variant="outline" size="icon" aria-label="About QuickForm">
+        {/* Corrected "About Us" button with Tooltip */}
+        <Link href="/about" passHref legacyBehavior>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="outline" size="icon" aria-label="About QuickForm" as="a">
                 <Info className="h-5 w-5" />
               </Button>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>About QuickForm</p>
-          </TooltipContent>
-        </Tooltip>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>About QuickForm</p>
+            </TooltipContent>
+          </Tooltip>
+        </Link>
         
         <DropdownMenu>
           <Tooltip>
