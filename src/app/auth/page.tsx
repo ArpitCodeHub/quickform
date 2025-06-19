@@ -10,8 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, Sun, Moon } from 'lucide-react'; // Added Sun and Moon icons
 import { useToast } from "@/hooks/use-toast";
+import { useAppSettings } from '@/hooks/use-app-settings'; // Import useAppSettings
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ export default function AuthPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { user, signIn, signUp, loading: authLoading, error: authError, clearError } = useAuth();
+  const { baseTheme, setBaseTheme } = useAppSettings(); // Get theme settings
   const router = useRouter();
   const { toast } = useToast();
 
@@ -54,6 +56,10 @@ export default function AuthPage() {
     setIsSubmitting(false);
   };
 
+  const toggleTheme = () => {
+    setBaseTheme(baseTheme === 'light' ? 'dark' : 'light');
+  };
+
   if (authLoading || user) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -63,7 +69,12 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/30 via-background to-accent/30 p-4">
+    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/30 via-background to-accent/30 p-4">
+      <div className="absolute top-4 right-4">
+        <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+          {baseTheme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+        </Button>
+      </div>
       <Tabs defaultValue="login" className="w-full max-w-md">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
