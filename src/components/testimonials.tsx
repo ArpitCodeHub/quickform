@@ -2,7 +2,6 @@
 "use client";
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 // import { Star } from 'lucide-react'; // Optional for ratings
 
 interface Testimonial {
@@ -10,7 +9,8 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
-  avatarUrl: string;
+  // avatarUrl and avatarFallback are no longer used visually but kept in data structure
+  avatarUrl: string; 
   avatarFallback: string;
   avatarHint: string;
 }
@@ -55,16 +55,11 @@ const TestimonialsSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonialsData.map((testimonial) => (
             <Card key={testimonial.id} className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card rounded-xl overflow-hidden">
-              <CardHeader className="pb-4 pt-6">
-                <div className="flex items-center space-x-4 px-6">
-                  <Avatar className="h-14 w-14 border-2 border-primary/50">
-                    <AvatarImage src={testimonial.avatarUrl} alt={testimonial.author} data-ai-hint={testimonial.avatarHint} />
-                    <AvatarFallback className="text-lg">{testimonial.avatarFallback}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <CardTitle className="text-lg font-semibold text-foreground">{testimonial.author}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  </div>
+              <CardHeader className="pb-4 pt-6 px-6">
+                {/* Removed Avatar component */}
+                <div>
+                  <CardTitle className="text-lg font-semibold text-foreground">{testimonial.author}</CardTitle>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                 </div>
               </CardHeader>
               <CardContent className="px-6 pb-6">
