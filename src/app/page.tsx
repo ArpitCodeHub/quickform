@@ -6,7 +6,7 @@ import ResumePreview from '@/components/resume-preview/resume-preview';
 import AppControls from '@/components/app-controls';
 import { Loader2 } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ResumeForgePage() {
   const {
@@ -19,6 +19,11 @@ export default function ResumeForgePage() {
   } = useAppSettings();
 
   const { toast } = useToast();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
@@ -84,7 +89,7 @@ export default function ResumeForgePage() {
     toast({ title: "Print to PDF", description: "Your browser's print dialog has been opened. Choose 'Save as PDF'." });
   };
 
-  if (isLoadingAppSettings || (!resumeData || !resumeData.personalDetails)) { 
+  if (!isMounted || isLoadingAppSettings || (!resumeData || !resumeData.personalDetails)) { 
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
