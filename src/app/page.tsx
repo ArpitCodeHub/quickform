@@ -28,7 +28,8 @@ export default function ResumeForgePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
-  const testimonialsRef = useRef<HTMLDivElement>(null); 
+  const testimonialsRef = useRef<HTMLDivElement>(null);
+  const [isPageScrolled, setIsPageScrolled] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -43,20 +44,27 @@ export default function ResumeForgePage() {
   useEffect(() => {
     if (!isMounted) return;
 
-    const handleScroll = () => {
+    const handleScrollEffects = () => {
+      // Parallax for testimonials
       if (testimonialsRef.current) {
         const scrollY = window.scrollY;
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
-        // Ensure the element is not translated beyond its natural position upwards initially
         testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.5)}px)`;
+      }
+
+      // Blur effect for scrolled page
+      if (window.scrollY > 10) {
+        setIsPageScrolled(true);
+      } else {
+        setIsPageScrolled(false);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); 
+    window.addEventListener('scroll', handleScrollEffects);
+    handleScrollEffects(); // Initial call
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScrollEffects);
   }, [isMounted]); 
 
   const handleExportHTML = () => {
@@ -131,9 +139,17 @@ export default function ResumeForgePage() {
     );
   }
   
+  const blurClass = isPageScrolled ? 'filter blur-sm' : 'filter-none';
+  const transitionClass = 'transition-all duration-300 ease-in-out';
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground font-body">
-      <header className={`p-4 shadow-md bg-card border-b border-border sticky top-0 z-50 ${applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : ''} transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+      <header 
+        className={`p-4 shadow-md bg-card border-b border-border sticky top-0 z-50 
+                   ${applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : ''} 
+                   transition-opacity duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}
+                   ${blurClass} ${transitionClass}`}
+      >
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-headline font-bold text-primary">QuickForm</h1>
           <AppControls
@@ -150,7 +166,7 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
-      <div className="flex-grow flex flex-col"> {/* Removed pb-24 */}
+      <div className="flex-grow flex flex-col">
         <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
@@ -182,13 +198,12 @@ export default function ResumeForgePage() {
           </div>
         </main>
         
-        <div ref={testimonialsRef} className="relative z-0"> 
+        <div ref={testimonialsRef} className={`relative z-0 ${blurClass} ${transitionClass}`}> 
           <TestimonialsSection />
         </div>
         
       </div>
-      <AppFooter />
+      <AppFooter isPageScrolled={isPageScrolled} />
     </div>
   );
 }
-
