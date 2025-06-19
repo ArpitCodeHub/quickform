@@ -71,7 +71,7 @@ export default function ResumeForgePage() {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${resumeData.personalDetails.fullName ? resumeData.personalDetails.fullName + ' - Resume' : 'My Resume'}</title>
+      <title>${resumeData.personalDetails.fullName ? resumeData.personalDetails.fullName + ' - Document' : 'My Document'}</title>
       ${fontLinks}
       <style>
         body { margin: 20px; font-family: 'Poppins', sans-serif; background-color: #fff; color: #000; } 
@@ -88,12 +88,12 @@ export default function ResumeForgePage() {
     const blob = new Blob([fullHtml], { type: 'text/html' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `${(resumeData.personalDetails.fullName || 'resume').replace(/\s+/g, '_').toLowerCase()}.html`;
+    link.download = `${(resumeData.personalDetails.fullName || 'document').replace(/\s+/g, '_').toLowerCase()}.html`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(link.href);
-    toast({ title: "HTML Exported", description: "Your resume has been downloaded as an HTML file." });
+    toast({ title: "HTML Exported", description: "Your document has been downloaded as an HTML file." });
   };
 
   const handleExportPDF = () => {
@@ -115,7 +115,7 @@ export default function ResumeForgePage() {
     <div className="min-h-screen flex flex-col bg-background text-foreground font-body">
       <header className={`p-4 shadow-md bg-card border-b border-border sticky top-0 z-50 ${applyGlassmorphism ? 'glassmorphic-panel !bg-card/80' : ''}`}>
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-headline font-bold text-primary">ResumeForge</h1>
+          <h1 className="text-3xl font-headline font-bold text-primary">QuickForm</h1>
           <AppControls
             baseTheme={baseTheme}
             setBaseTheme={setBaseTheme}
@@ -133,7 +133,7 @@ export default function ResumeForgePage() {
       <main className="flex-grow container mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
         <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
           <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-            <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Resume</h2>
+            <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
             <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
           </div>
         </section>
@@ -143,7 +143,7 @@ export default function ResumeForgePage() {
             <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
           </div>
           <div className={`mt-4 p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-            <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Resume</h3>
+            <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Document</h3>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button onClick={handleExportHTML} variant="outline" className="flex-1">
                 <Download className="mr-2 h-4 w-4" />
