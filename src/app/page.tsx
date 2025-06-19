@@ -20,14 +20,6 @@ export default function ResumeForgePage() {
 
   const { toast } = useToast();
 
-  // Ensure resumeData is initialized, especially after clearing localStorage
-  useEffect(() => {
-    if (!isLoadingAppSettings && (!resumeData || !resumeData.personalDetails)) {
-       setResumeData(defaultResumeData);
-    }
-  }, [isLoadingAppSettings, resumeData, setResumeData]);
-
-
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
     if (!previewNode) {
