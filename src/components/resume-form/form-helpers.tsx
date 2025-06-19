@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { PlusCircle, Trash2, Sparkles, Loader2 } from "lucide-react";
+import { PlusCircle, Trash2 } from "lucide-react"; // Removed Sparkles, Loader2
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from '@/hooks/use-toast';
-import { enhanceResumeContent } from '@/ai/flows/enhance-resume-content';
-import type { AiEnhanceableSection } from '@/types/resume';
+// Removed useToast and enhanceResumeContent import
+// Removed AiEnhanceableSection import
 
 interface FormFieldProps {
   id: string;
@@ -19,9 +18,7 @@ interface FormFieldProps {
   placeholder?: string;
   type?: string;
   isTextarea?: boolean;
-  canEnhance?: boolean;
-  sectionIdentifier?: AiEnhanceableSection; // e.g., 'summary', 'experienceEntryDescription'
-  fieldKey?: string; // If part of a larger object for AI context
+  // Removed canEnhance, sectionIdentifier, fieldKey
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -32,34 +29,10 @@ export const FormField: React.FC<FormFieldProps> = ({
   placeholder,
   type = "text",
   isTextarea = false,
-  canEnhance = false,
-  sectionIdentifier,
-  fieldKey,
+  // Removed canEnhance, sectionIdentifier, fieldKey defaults
 }) => {
-  const [isEnhancing, setIsEnhancing] = React.useState(false);
-  const { toast } = useToast();
-
-  const handleEnhance = async () => {
-    if (!value || !sectionIdentifier) {
-      toast({ variant: "destructive", title: "Cannot Enhance", description: "Content is empty or section not specified." });
-      return;
-    }
-    setIsEnhancing(true);
-    try {
-      const result = await enhanceResumeContent({
-        section: sectionIdentifier + (fieldKey ? ` (${fieldKey})` : ''),
-        content: value,
-        desiredTone: "professional and impactful"
-      });
-      onChange(result.enhancedContent);
-      toast({ title: "Content Enhanced!", description: "AI suggestions applied." });
-    } catch (error) {
-      console.error("AI Enhancement Error:", error);
-      toast({ variant: "destructive", title: "Enhancement Failed", description: String(error) || "Could not enhance content." });
-    } finally {
-      setIsEnhancing(false);
-    }
-  };
+  // Removed isEnhancing state and useToast hook
+  // Removed handleEnhance function
 
   return (
     <div className="space-y-2">
@@ -84,19 +57,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           className="flex-grow"
         />
       )}
-      {canEnhance && (
-        <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={handleEnhance}
-            disabled={isEnhancing || !value}
-            aria-label={`Enhance ${label} with AI`}
-            className="shrink-0"
-          >
-            {isEnhancing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-          </Button>
-        )}
+      {/* Removed AI enhancement button */}
       </div>
     </div>
   );

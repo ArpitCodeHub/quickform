@@ -70,25 +70,23 @@ export default function AboutPage() {
           <CardContent className="space-y-6 text-base leading-relaxed">
             <p>
               Welcome to QuickForm! We believe that crafting high-quality, professional documents shouldn't be a daunting task. 
-              Our platform is designed to simplify this process, providing you with intuitive tools and intelligent assistance 
-              to help you put your best foot forward.
+              Our platform is designed to simplify this process, providing you with intuitive tools to help you put your best foot forward.
             </p>
             <p>
               Whether you're building a resume, a cover letter, or any other professional document, QuickForm offers a seamless 
-              experience from start to finish. With dynamic form builders, live previews, AI-powered content suggestions, 
-              and a variety of customizable themes, you have everything you need to create documents that stand out.
+              experience from start to finish. With dynamic form builders, live previews, and a variety of customizable themes, 
+              you have everything you need to create documents that stand out.
             </p>
             <h3 className="text-xl font-semibold text-primary pt-4">What We Offer:</h3>
             <ul className="list-disc list-inside space-y-2 pl-4">
               <li><strong>Dynamic Form Builder:</strong> Easily input your information with our interactive forms.</li>
               <li><strong>Live Preview:</strong> See your document take shape in real-time.</li>
-              <li><strong>AI Content Enhancement:</strong> Get smart suggestions to improve your content's impact.</li>
               <li><strong>Theme Selection:</strong> Choose from multiple templates to match your style.</li>
               <li><strong>Flexible Export Options:</strong> Download your documents in PDF or HTML format.</li>
               <li><strong>Secure & Private:</strong> Your data is saved locally in your browser for your privacy.</li>
             </ul>
             <p>
-              QuickForm is built with modern technology, including Next.js, React, Tailwind CSS, and Genkit for AI features, 
+              QuickForm is built with modern technology, including Next.js, React, and Tailwind CSS, 
               ensuring a fast, responsive, and cutting-edge experience.
             </p>
             <p>

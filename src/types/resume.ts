@@ -1,3 +1,4 @@
+
 export interface PersonalDetails {
   fullName: string;
   jobTitle: string;
@@ -50,9 +51,7 @@ export interface ResumeData {
 
 export type ResumeSectionKey = keyof ResumeData;
 
-// For UI mapping or specific AI calls if needed in future
-export type AiEnhanceableSection = 'summary' | 'experienceEntryDescription' | 'skillDescription' | 'customSectionContent';
+// Removed AiEnhanceableSection type
 
 export type BaseTheme = 'light' | 'dark';
 export type ResumeTemplateKey = 'classic' | 'modern' | 'creative';
-

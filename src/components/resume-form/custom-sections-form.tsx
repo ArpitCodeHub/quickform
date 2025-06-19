@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from 'react';
 import type { CustomSection as CustomSectionType } from '@/types/resume';
@@ -51,9 +52,7 @@ const CustomSectionsForm: React.FC<CustomSectionsFormProps> = ({ data, onChange 
           onChange={(val) => handleChange('content', val)}
           placeholder="Describe your achievements, projects, etc."
           isTextarea
-          canEnhance
-          sectionIdentifier="customSectionContent"
-          fieldKey={item.title || `Custom Section ${index + 1}`}
+          // Removed canEnhance and sectionIdentifier props
         />
       </div>
     );

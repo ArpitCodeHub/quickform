@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from 'react';
 import type { PersonalDetails } from '@/types/resume';
@@ -61,8 +62,7 @@ const PersonalDetailsForm: React.FC<PersonalDetailsFormProps> = ({ data, onChang
         onChange={(val) => handleChange('summary', val)}
         placeholder="A brief overview of your skills and experience..."
         isTextarea
-        canEnhance
-        sectionIdentifier="summary"
+        // Removed canEnhance and sectionIdentifier props
       />
        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormField

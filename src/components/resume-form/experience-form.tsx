@@ -1,3 +1,4 @@
+
 "use client";
 import * as React from 'react';
 import type { ExperienceEntry } from '@/types/resume';
@@ -76,9 +77,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ data, onChange }) => {
           onChange={(val) => handleChange('description', val)}
           placeholder="Describe your role and achievements..."
           isTextarea
-          canEnhance
-          sectionIdentifier="experienceEntryDescription"
-          fieldKey={item.jobTitle || `Experience ${index + 1}`}
+          // Removed canEnhance and sectionIdentifier props
         />
       </div>
     );
