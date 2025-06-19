@@ -13,9 +13,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer } from "lucide-react";
+import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer, LogOut } from "lucide-react"; // Added LogOut icon
 import type { BaseTheme, ResumeTemplateKey } from '@/types/resume';
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/hooks/use-auth'; // Import useAuth
 
 interface AppControlsProps {
   baseTheme: BaseTheme;
@@ -41,12 +42,18 @@ const AppControls: React.FC<AppControlsProps> = ({
   onResetData,
 }) => {
   const { toast } = useToast();
+  const { user, signOut, loading: authLoading } = useAuth(); // Get user and signOut from useAuth
 
   const handleResetData = () => {
     if (window.confirm("Are you sure you want to reset all resume data? This action cannot be undone.")) {
       onResetData();
       toast({ title: "Data Reset", description: "Your resume data has been cleared." });
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({ title: "Signed Out", description: "You have been successfully signed out." });
   };
   
   return (
@@ -86,13 +93,12 @@ const AppControls: React.FC<AppControlsProps> = ({
             <DropdownMenuRadioItem value="modern" className="cursor-pointer">
               <Palette className="mr-2 h-4 w-4" /> Modern
             </DropdownMenuRadioItem>
-            {/* Add more templates here, e.g., creative */}
-            {/* <DropdownMenuRadioItem value="creative">Creative</DropdownMenuRadioItem> */}
           </DropdownMenuRadioGroup>
 
           <DropdownMenuSeparator />
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          {/* These export buttons are now duplicated below the preview as per request, keeping them here as well for quick access */}
           <DropdownMenuItem onSelect={onExportHTML} className="cursor-pointer">
             <Download className="mr-2 h-4 w-4" /> Export as HTML
           </DropdownMenuItem>
@@ -102,6 +108,15 @@ const AppControls: React.FC<AppControlsProps> = ({
           <DropdownMenuItem onSelect={handleResetData} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
             <RefreshCcw className="mr-2 h-4 w-4" /> Reset All Data
           </DropdownMenuItem>
+          
+          {user && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={handleSignOut} disabled={authLoading} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

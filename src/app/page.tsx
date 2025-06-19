@@ -1,12 +1,16 @@
 
 "use client";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSettings, defaultResumeData } from '@/hooks/use-app-settings';
+import { useAuth } from '@/hooks/use-auth'; // Import useAuth
+import { useRouter } from 'next/navigation'; // Import useRouter
 import ResumeForm from '@/components/resume-form/resume-form';
 import ResumePreview from '@/components/resume-preview/resume-preview';
 import AppControls from '@/components/app-controls';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Download, Printer } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export default function ResumeForgePage() {
   const {
@@ -18,12 +22,21 @@ export default function ResumeForgePage() {
     resetResumeData,
   } = useAppSettings();
 
+  const { user, loading: authLoading } = useAuth(); // Get user and authLoading state
+  const router = useRouter(); // Initialize router
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
+  useEffect(() => {
+    // If auth is not loading and there's no user, redirect to auth page
+    if (isMounted && !authLoading && !user) {
+      router.push('/auth');
+    }
+  }, [user, authLoading, router, isMounted]);
 
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
@@ -89,7 +102,8 @@ export default function ResumeForgePage() {
     toast({ title: "Print to PDF", description: "Your browser's print dialog has been opened. Choose 'Save as PDF'." });
   };
 
-  if (!isMounted || isLoadingAppSettings) { 
+  // Show loading spinner if settings are loading, auth is loading, or user is not yet available (and mounted)
+  if (!isMounted || isLoadingAppSettings || authLoading || !user) { 
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -110,8 +124,8 @@ export default function ResumeForgePage() {
             setApplyGlassmorphism={setApplyGlassmorphism}
             resumeTemplate={resumeTemplate}
             setResumeTemplate={setResumeTemplate}
-            onExportHTML={handleExportHTML}
-            onExportPDF={handleExportPDF}
+            onExportHTML={handleExportHTML} // Passed for AppControls, not directly used on page now for main dl button
+            onExportPDF={handleExportPDF}   // Passed for AppControls
             onResetData={resetResumeData}
           />
         </div>
@@ -124,10 +138,23 @@ export default function ResumeForgePage() {
             <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
           </div>
         </section>
-        <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg">
-          <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+        <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
+          <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
             <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
             <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
+          </div>
+          <div className={`mt-4 p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+            <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Resume</h3>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button onClick={handleExportHTML} variant="outline" className="flex-1">
+                <Download className="mr-2 h-4 w-4" />
+                Download HTML
+              </Button>
+              <Button onClick={handleExportPDF} variant="outline" className="flex-1">
+                <Printer className="mr-2 h-4 w-4" />
+                Save as PDF
+              </Button>
+            </div>
           </div>
         </section>
       </main>
