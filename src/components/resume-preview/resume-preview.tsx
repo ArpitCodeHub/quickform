@@ -1,5 +1,5 @@
 "use client";
-import type React from 'react';
+import * as React from 'react';
 import type { ResumeData, ResumeTemplateKey } from '@/types/resume';
 import ClassicTemplate from './templates/classic-template';
 import ModernTemplate from './templates/modern-template';

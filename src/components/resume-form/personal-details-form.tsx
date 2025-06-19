@@ -1,5 +1,5 @@
 "use client";
-import type React from 'react';
+import * as React from 'react';
 import type { PersonalDetails } from '@/types/resume';
 import { FormField } from './form-helpers';
 

@@ -1,5 +1,5 @@
 "use client";
-import type React from 'react';
+import * as React from 'react';
 import type { ResumeData } from '@/types/resume';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import PersonalDetailsForm from './personal-details-form';

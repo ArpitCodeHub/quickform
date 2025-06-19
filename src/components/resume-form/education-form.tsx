@@ -1,5 +1,5 @@
 "use client";
-import type React from 'react';
+import * as React from 'react';
 import type { EducationEntry } from '@/types/resume';
 import { FormField, ArraySection, generateId } from './form-helpers';
 

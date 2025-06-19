@@ -1,5 +1,5 @@
 "use client";
-import type React from 'react';
+import * as React from 'react';
 import type { ResumeData } from '@/types/resume';
 import { Mail, Phone, Linkedin, Github, Globe, MapPin } from 'lucide-react';
 
