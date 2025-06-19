@@ -76,19 +76,18 @@ const AppControls: React.FC<AppControlsProps> = ({
           </TooltipContent>
         </Tooltip>
 
-        {/* Corrected "About Us" button with Tooltip */}
-        <Link href="/about" passHref legacyBehavior>
-          <Tooltip>
-            <TooltipTrigger asChild>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href="/about" passHref legacyBehavior>
               <Button variant="outline" size="icon" aria-label="About QuickForm" as="a">
                 <Info className="h-5 w-5" />
               </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>About QuickForm</p>
-            </TooltipContent>
-          </Tooltip>
-        </Link>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>About QuickForm</p>
+          </TooltipContent>
+        </Tooltip>
         
         <DropdownMenu>
           <Tooltip>
