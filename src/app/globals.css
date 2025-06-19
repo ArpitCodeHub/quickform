@@ -29,6 +29,16 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Sidebar Light Theme Variables */
+    --sidebar-background: 0 0% 100%; /* Same as card */
+    --sidebar-foreground: 240 10% 3.9%; /* Same as main foreground */
+    --sidebar-primary: 208 57% 64%; /* Same as main primary */
+    --sidebar-primary-foreground: 0 0% 100%; /* Same as main primary-foreground */
+    --sidebar-accent: 208 57% 60%; /* Slightly lighter primary for accent */
+    --sidebar-accent-foreground: 0 0% 100%; /* White text for contrast */
+    --sidebar-border: 210 20% 88%; /* Similar to input border */
+    --sidebar-ring: 208 57% 54%; /* Same as main ring */
   }
 
   .dark {
@@ -51,6 +61,16 @@
     --border: 220 15% 30%;
     --input: 220 15% 30%;
     --ring: 208 57% 70%; /* Lighter Sky Blue for ring in dark mode */
+
+    /* Sidebar Dark Theme Variables */
+    --sidebar-background: 220 15% 18%; /* Slightly different from card */
+    --sidebar-foreground: 210 40% 98%; /* Same as main foreground */
+    --sidebar-primary: 208 57% 64%; /* Same as main primary */
+    --sidebar-primary-foreground: 220 15% 5%; /* Same as main primary-foreground */
+    --sidebar-accent: 208 57% 60%; /* Consistent accent */
+    --sidebar-accent-foreground: 220 15% 5%; /* Consistent accent foreground */
+    --sidebar-border: 220 15% 25%; /* Similar to input border in dark mode */
+    --sidebar-ring: 208 57% 70%; /* Same as main ring */
   }
 }
 
@@ -107,4 +127,18 @@
   .no-print {
     display: none !important;
   }
+}
+
+/* Custom Scrollbar Styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-thumb-primary\/50::-webkit-scrollbar-thumb { /* Note: class name in HTML is scrollbar-thumb-primary/50 */
+  background-color: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+.scrollbar-track-primary\/10::-webkit-scrollbar-track { /* Note: class name in HTML is scrollbar-track-primary/10 */
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 4px;
 }

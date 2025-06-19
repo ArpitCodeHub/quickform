@@ -1,3 +1,4 @@
+
 "use client";
 import type React from 'react';
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem
 } from "@/components/ui/dropdown-menu";
-import { Sun, Moon, Settings, FileText, Download, RefreshCcw, SparklesIcon, Palette, Printer } from "lucide-react";
+import { Sun, Moon, Settings, FileText, Download, RefreshCcw, Sparkles, Palette, Printer } from "lucide-react";
 import type { BaseTheme, ResumeTemplateKey } from '@/types/resume';
 import { useToast } from "@/hooks/use-toast";
 
@@ -72,7 +73,7 @@ const AppControls: React.FC<AppControlsProps> = ({
             onCheckedChange={setApplyGlassmorphism}
             className="cursor-pointer"
           >
-            <SparklesIcon className="mr-2 h-4 w-4" /> Modern Style (Glass)
+            <Sparkles className="mr-2 h-4 w-4" /> Modern Style (Glass)
           </DropdownMenuCheckboxItem>
           
           <DropdownMenuSeparator />

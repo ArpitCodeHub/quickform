@@ -1,3 +1,4 @@
+
 "use client";
 import { useAppSettings, defaultResumeData } from '@/hooks/use-app-settings';
 import ResumeForm from '@/components/resume-form/resume-form';
@@ -35,28 +36,20 @@ export default function ResumeForgePage() {
     }
     const previewContent = previewNode.innerHTML;
     
-    // Attempt to grab linked stylesheets from the document head relevant to the preview
-    // This is a simplified approach; robust CSS extraction is complex.
     let styles = "";
     const sheets = Array.from(document.styleSheets);
     sheets.forEach(sheet => {
       try {
-        // Only include stylesheets that are not from external domains (like Google Fonts API directly if not downloaded)
-        // and only include if it's likely related to app's own styling.
-        // This is a heuristic and might need refinement.
         if (sheet.href && (sheet.href.startsWith(window.location.origin) || !sheet.href.startsWith('http'))) {
-          // For same-origin stylesheets, try to read rules.
           Array.from(sheet.cssRules).forEach(rule => styles += rule.cssText);
-        } else if (!sheet.href) { // Inline styles
+        } else if (!sheet.href) { 
           Array.from(sheet.cssRules).forEach(rule => styles += rule.cssText);
         }
       } catch (e) {
-        // Catch CORS errors or other issues accessing cssRules
         console.warn("Could not read CSS rules from stylesheet:", sheet.href, e);
       }
     });
 
-    // Add Google Font links. The actual font files must be accessible by the opened HTML.
     const fontLinks = `
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,9 +66,7 @@ export default function ResumeForgePage() {
       ${fontLinks}
       <style>
         body { margin: 20px; font-family: 'PT Sans', sans-serif; background-color: #fff; color: #000; } 
-        /* Embedded styles from app */
         ${styles}
-        /* Ensure preview printable area is full width for HTML export */
         #resume-preview-printable { width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
       </style>
     </head>
@@ -97,13 +88,11 @@ export default function ResumeForgePage() {
   };
 
   const handleExportPDF = () => {
-    // This triggers the browser's print dialog. Users can "Save as PDF".
-    // Print-specific CSS is handled in globals.css and template styles.
     window.print();
     toast({ title: "Print to PDF", description: "Your browser's print dialog has been opened. Choose 'Save as PDF'." });
   };
 
-  if (isLoadingAppSettings || (!resumeData || !resumeData.personalDetails)) { // Check resumeData integrity
+  if (isLoadingAppSettings || (!resumeData || !resumeData.personalDetails)) { 
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
@@ -148,14 +137,3 @@ export default function ResumeForgePage() {
     </div>
   );
 }
-
-// Add scrollbar utility classes to tailwind.config.js if not already present or use a plugin
-// For simplicity, I'm using inline class names assuming a plugin like tailwind-scrollbar might be used.
-// If not, these scrollbar-* classes won't apply by default with base Tailwind.
-// A simple alternative for basic scrollbar styling if no plugin:
-// Add to globals.css:
-/*
-.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
-.scrollbar-thumb-primary\/50::-webkit-scrollbar-thumb { background-color: hsl(var(--primary) / 0.5); border-radius: 4px; }
-.scrollbar-track-primary\/10::-webkit-scrollbar-track { background-color: hsl(var(--primary) / 0.1); border-radius: 4px; }
-*/
