@@ -46,17 +46,22 @@ export default function ResumeForgePage() {
     const handleScroll = () => {
       if (testimonialsRef.current) {
         const scrollY = window.scrollY;
+        // Adjust parallaxFactor to control the speed of the parallax effect
+        // 1 = no parallax, 0 = stays fixed, <1 moves slower, >1 moves faster (not typical for parallax)
         const parallaxFactor = 0.8; 
         const transformValue = scrollY * (1 - parallaxFactor);
+        // Apply the transform. Ensure the element being transformed is not causing layout shifts
+        // by being taken out of flow if not intended. translateY is generally safe.
         testimonialsRef.current.style.transform = `translateY(${transformValue}px)`;
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Call handleScroll once initially to set the correct position if page is already scrolled
     handleScroll(); 
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMounted]);
+  }, [isMounted]); // Rerun if isMounted changes
 
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
@@ -66,17 +71,19 @@ export default function ResumeForgePage() {
     }
     const previewContent = previewNode.innerHTML;
     
+    // Consolidate style gathering
     let styles = "";
     const sheets = Array.from(document.styleSheets);
     sheets.forEach(sheet => {
       try {
+        // Only process same-origin or relative stylesheets to avoid CORS issues & include local styles
         if (sheet.href && (sheet.href.startsWith(window.location.origin) || !sheet.href.startsWith('http'))) {
           Array.from(sheet.cssRules).forEach(rule => styles += rule.cssText);
-        } else if (!sheet.href) { 
+        } else if (!sheet.href) { // Inline <style> tags
           Array.from(sheet.cssRules).forEach(rule => styles += rule.cssText);
         }
       } catch (e) {
-        console.warn("Could not read CSS rules from stylesheet:", sheet.href, e);
+        // console.warn("Could not read CSS rules from stylesheet:", sheet.href, e);
       }
     });
 
@@ -96,6 +103,7 @@ export default function ResumeForgePage() {
       <style>
         body { margin: 20px; font-family: 'Poppins', sans-serif; background-color: #fff; color: #000; } 
         ${styles}
+        /* Ensure the preview itself has no extra box model properties in export */
         #resume-preview-printable { width: 100%; margin: 0; padding: 0; box-shadow: none; border: none; }
       </style>
     </head>
@@ -121,6 +129,7 @@ export default function ResumeForgePage() {
     toast({ title: "Print to PDF", description: "Your browser's print dialog has been opened. Choose 'Save as PDF'." });
   };
 
+  // Loading state for the page
   if (!isMounted || isLoadingAppSettings || authLoading || !user) { 
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -149,15 +158,19 @@ export default function ResumeForgePage() {
         </div>
       </header>
 
+      {/* This div ensures footer is pushed down */}
       <div className="flex-grow"> 
         <main className={`container mx-auto p-4 transition-opacity duration-500 delay-100 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
+            {/* Resume Form Section */}
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
               <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
                 <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
                 <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
               </div>
             </section>
+            
+            {/* Resume Preview Section */}
             <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
               <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
                 <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
@@ -179,7 +192,8 @@ export default function ResumeForgePage() {
             </section>
           </div>
         </main>
-        <div ref={testimonialsRef} className="relative z-0"> 
+        {/* Testimonials Section - Wrapped in a div for parallax */}
+        <div ref={testimonialsRef} className="relative z-0"> {/* Ensure z-index is appropriate if other elements might overlap */}
           <TestimonialsSection />
         </div>
       </div>
