@@ -18,6 +18,7 @@ import type { BaseTheme, ResumeTemplateKey } from '@/types/resume';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/hooks/use-auth';
 import Link from 'next/link';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface AppControlsProps {
   baseTheme: BaseTheme;
@@ -62,77 +63,104 @@ const AppControls: React.FC<AppControlsProps> = ({
   };
   
   return (
-    <div className="flex items-center gap-2">
-      <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
-        {baseTheme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-      </Button>
-      <Link href="/about" passHref>
-        <Button variant="outline" size="icon" aria-label="About QuickForm">
-          <Info className="h-5 w-5" />
-        </Button>
-      </Link>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" aria-label="App Settings">
-            <Settings className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={baseTheme} onValueChange={(value) => setBaseTheme(value as BaseTheme)}>
-            <DropdownMenuRadioItem value="light" className="cursor-pointer">
-              <Sun className="mr-2 h-4 w-4" /> Light Mode
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="dark" className="cursor-pointer">
-              <Moon className="mr-2 h-4 w-4" /> Dark Mode
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
-          <DropdownMenuCheckboxItem
-            checked={applyGlassmorphism}
-            onCheckedChange={setApplyGlassmorphism}
-            className="cursor-pointer"
-          >
-            <Sparkles className="mr-2 h-4 w-4" /> Modern Style (Glass)
-          </DropdownMenuCheckboxItem>
-          
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>Document Template</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuRadioGroup value={resumeTemplate} onValueChange={(value) => setResumeTemplate(value as ResumeTemplateKey)}>
-            <DropdownMenuRadioItem value="classic" className="cursor-pointer">
-              <FileText className="mr-2 h-4 w-4" /> Classic
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="modern" className="cursor-pointer">
-              <Palette className="mr-2 h-4 w-4" /> Modern
-            </DropdownMenuRadioItem>
-            {/* Add other templates here if needed */}
-          </DropdownMenuRadioGroup>
+    <TooltipProvider delayDuration={100}>
+      <div className="flex items-center gap-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+              {baseTheme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Toggle theme</p>
+          </TooltipContent>
+        </Tooltip>
 
-          <DropdownMenuSeparator />
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={onExportHTML} className="cursor-pointer">
-            <Download className="mr-2 h-4 w-4" /> Export as HTML
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={onExportPDF} className="cursor-pointer">
-            <Printer className="mr-2 h-4 w-4" /> Export as PDF
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={handleResetData} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
-            <RefreshCcw className="mr-2 h-4 w-4" /> Reset All Data
-          </DropdownMenuItem>
-          
-          {user && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={handleSignOut} disabled={authLoading} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
-                <LogOut className="mr-2 h-4 w-4" /> Sign Out
-              </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href="/about" passHref legacyBehavior>
+              <Button variant="outline" size="icon" asChild={false} aria-label="About QuickForm">
+                 {/* The actual button needs to be what TooltipTrigger considers its child for styling/events */}
+                 {/* To make this work cleanly with Link and Button, we can let Link pass href and Button be the direct child */}
+                <Info className="h-5 w-5" />
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>About QuickForm</p>
+          </TooltipContent>
+        </Tooltip>
+        
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" aria-label="App Settings">
+                  <Settings className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup value={baseTheme} onValueChange={(value) => setBaseTheme(value as BaseTheme)}>
+                  <DropdownMenuRadioItem value="light" className="cursor-pointer">
+                    <Sun className="mr-2 h-4 w-4" /> Light Mode
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="dark" className="cursor-pointer">
+                    <Moon className="mr-2 h-4 w-4" /> Dark Mode
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+                <DropdownMenuCheckboxItem
+                  checked={applyGlassmorphism}
+                  onCheckedChange={setApplyGlassmorphism}
+                  className="cursor-pointer"
+                >
+                  <Sparkles className="mr-2 h-4 w-4" /> Modern Style (Glass)
+                </DropdownMenuCheckboxItem>
+                
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Document Template</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup value={resumeTemplate} onValueChange={(value) => setResumeTemplate(value as ResumeTemplateKey)}>
+                  <DropdownMenuRadioItem value="classic" className="cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4" /> Classic
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="modern" className="cursor-pointer">
+                    <Palette className="mr-2 h-4 w-4" /> Modern
+                  </DropdownMenuRadioItem>
+                  {/* Add other templates here if needed */}
+                </DropdownMenuRadioGroup>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onSelect={onExportHTML} className="cursor-pointer">
+                  <Download className="mr-2 h-4 w-4" /> Export as HTML
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={onExportPDF} className="cursor-pointer">
+                  <Printer className="mr-2 h-4 w-4" /> Export as PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleResetData} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
+                  <RefreshCcw className="mr-2 h-4 w-4" /> Reset All Data
+                </DropdownMenuItem>
+                
+                {user && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={handleSignOut} disabled={authLoading} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
+                      <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>App Settings</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 };
 
