@@ -1,7 +1,7 @@
 
 "use client";
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react'; // Added useRef
 import { useAppSettings } from '@/hooks/use-app-settings';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
@@ -11,8 +11,8 @@ import AppControls from '@/components/app-controls';
 import { Loader2, Download, Printer } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
-import TestimonialsSection from '@/components/testimonials'; // Added import
-import AppFooter from '@/components/layout/footer'; // Added import
+import TestimonialsSection from '@/components/testimonials';
+import AppFooter from '@/components/layout/footer';
 
 export default function ResumeForgePage() {
   const {
@@ -28,6 +28,7 @@ export default function ResumeForgePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
+  const testimonialsRef = useRef<HTMLDivElement>(null); // Ref for parallax section
 
   useEffect(() => {
     setIsMounted(true);
@@ -38,6 +39,28 @@ export default function ResumeForgePage() {
       router.push('/auth');
     }
   }, [user, authLoading, router, isMounted]);
+
+  // Parallax effect for TestimonialsSection
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleScroll = () => {
+      if (testimonialsRef.current) {
+        const scrollY = window.scrollY;
+        // Parallax factor: 0.8 means it scrolls at 80% of normal speed (appears slower)
+        // The transform makes up for the 20% "lag"
+        const parallaxFactor = 0.8; 
+        const transformValue = scrollY * (1 - parallaxFactor);
+        testimonialsRef.current.style.transform = `translateY(${transformValue}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Call once to set initial position if page is already scrolled
+    handleScroll(); 
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMounted]);
 
   const handleExportHTML = () => {
     const previewNode = document.getElementById('resume-preview-printable');
@@ -160,7 +183,10 @@ export default function ResumeForgePage() {
             </section>
           </div>
         </main>
-        <TestimonialsSection />
+        {/* Wrapper for parallax effect */}
+        <div ref={testimonialsRef} className="relative z-0"> 
+          <TestimonialsSection />
+        </div>
       </div>
       
       <AppFooter />
