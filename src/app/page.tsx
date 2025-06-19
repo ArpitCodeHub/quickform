@@ -89,7 +89,7 @@ export default function ResumeForgePage() {
     toast({ title: "Print to PDF", description: "Your browser's print dialog has been opened. Choose 'Save as PDF'." });
   };
 
-  if (!isMounted || isLoadingAppSettings || (!resumeData || !resumeData.personalDetails)) { 
+  if (!isMounted || isLoadingAppSettings) { 
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
