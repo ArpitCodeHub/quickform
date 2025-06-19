@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import TestimonialsSection from '@/components/testimonials';
 import AppFooter from '@/components/layout/footer';
+import SalaryHikeGraph from '@/components/salary-hike-graph'; // Import the new component
 import { cn } from "@/lib/utils";
 
 export default function ResumeForgePage() {
@@ -48,9 +49,19 @@ export default function ResumeForgePage() {
     const handleScrollEffects = () => {
       if (testimonialsRef.current) {
         const scrollY = window.scrollY;
-        const parallaxFactor = 0.8; 
-        const transformValue = scrollY * (1 - parallaxFactor);
-        testimonialsRef.current.style.transform = `translateY(${Math.min(0, transformValue * 0.25)}px)`;
+        // Ensure parallaxFactor is defined or adjust logic
+        const parallaxFactor = 0.8; // Example factor, adjust as needed
+        const rect = testimonialsRef.current.getBoundingClientRect();
+        const elementTop = rect.top + scrollY;
+        const viewportHeight = window.innerHeight;
+        
+        // Start effect when element is about to enter viewport or is in viewport
+        if (rect.bottom > 0 && rect.top < viewportHeight) {
+            const relativeScroll = scrollY + viewportHeight - elementTop;
+            const transformValue = relativeScroll * (1 - parallaxFactor) * 0.25;
+             // Apply transform more gently, ensure it moves up on scroll down
+            testimonialsRef.current.style.transform = `translateY(${Math.min(0, -transformValue * 0.1)}px)`;
+        }
       }
     };
 
@@ -143,7 +154,7 @@ export default function ResumeForgePage() {
         )}
       >
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl font-headline font-bold text-primary">QuickForm</h1>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-headline font-bold text-primary">QuickForm</h1>
           <AppControls
             baseTheme={baseTheme}
             setBaseTheme={setBaseTheme}
@@ -167,14 +178,14 @@ export default function ResumeForgePage() {
           >
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
               <div className={`bg-card p-3 sm:p-4 md:p-6 rounded-lg shadow-xl min-h-[400px] sm:min-h-[500px] md:h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-                <h2 id="resume-form-heading" className="text-xl sm:text-2xl font-headline font-semibold mb-4 sm:mb-6 text-primary">Craft Your Document</h2>
+                <h2 id="resume-form-heading" className="text-lg sm:text-xl md:text-2xl font-headline font-semibold mb-4 sm:mb-6 text-primary">Craft Your Document</h2>
                 <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
               </div>
             </section>
             
             <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
               <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-                <h2 id="resume-preview-heading" className="text-xl sm:text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
+                <h2 id="resume-preview-heading" className="text-lg sm:text-xl md:text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
                 <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
               </div>
               <div className={`mt-4 p-3 sm:p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
@@ -202,9 +213,12 @@ export default function ResumeForgePage() {
         > 
           <TestimonialsSection />
         </div>
+
+        <SalaryHikeGraph />
         
         <AppFooter />
       </div>
     </div>
   );
 }
+
