@@ -47,23 +47,23 @@ const testimonialsData: Testimonial[] = [
 
 const TestimonialsSection: React.FC = () => {
   return (
-    <section className="py-12 lg:py-20 bg-background">
+    <section className="py-10 sm:py-12 lg:py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-primary mb-10 lg:mb-16 font-headline">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-primary mb-8 lg:mb-12 font-headline">
           Loved by Professionals & Students Alike
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {testimonialsData.map((testimonial) => (
             <Card key={testimonial.id} className="shadow-lg hover:shadow-primary/20 transition-shadow duration-300 bg-card rounded-xl overflow-hidden">
-              <CardHeader className="pb-4 pt-6 px-6">
+              <CardHeader className="pb-3 pt-5 px-5 sm:pb-4 sm:pt-6 sm:px-6">
                 {/* Removed Avatar component */}
                 <div>
-                  <CardTitle className="text-lg font-semibold text-foreground">{testimonial.author}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <CardTitle className="text-md sm:text-lg font-semibold text-foreground">{testimonial.author}</CardTitle>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.role}</p>
                 </div>
               </CardHeader>
-              <CardContent className="px-6 pb-6">
-                <blockquote className="text-base leading-relaxed text-foreground/90 border-l-4 border-primary/70 pl-4 italic">
+              <CardContent className="px-5 pb-5 sm:px-6 sm:pb-6">
+                <blockquote className="text-sm sm:text-base leading-relaxed text-foreground/90 border-l-4 border-primary/70 pl-3 sm:pl-4 italic">
                   {testimonial.quote}
                 </blockquote>
                 {/* Optional: Add stars for rating */}

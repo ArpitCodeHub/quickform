@@ -13,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from '@/components/ui/button';
 import TestimonialsSection from '@/components/testimonials';
 import AppFooter from '@/components/layout/footer';
-import { cn } from "@/lib/utils"; // Import cn utility
+import { cn } from "@/lib/utils";
 
 export default function ResumeForgePage() {
   const {
@@ -55,7 +55,7 @@ export default function ResumeForgePage() {
     };
 
     window.addEventListener('scroll', handleScrollEffects);
-    handleScrollEffects(); // Initial call
+    handleScrollEffects(); 
 
     return () => {
       window.removeEventListener('scroll', handleScrollEffects);
@@ -143,7 +143,7 @@ export default function ResumeForgePage() {
         )}
       >
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-headline font-bold text-primary">QuickForm</h1>
+          <h1 className="text-2xl sm:text-3xl font-headline font-bold text-primary">QuickForm</h1>
           <AppControls
             baseTheme={baseTheme}
             setBaseTheme={setBaseTheme}
@@ -159,32 +159,32 @@ export default function ResumeForgePage() {
       </header>
 
       <div className="flex-grow flex flex-col">
-        <main className={`container mx-auto p-4`}>
+        <main className={`container mx-auto p-2 sm:p-4`}>
           <div 
             className={cn(
-              "grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8"
+              "grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 xl:gap-8"
             )}
           >
             <section aria-labelledby="resume-form-heading" className="lg:col-span-7 xl:col-span-8 overflow-hidden rounded-lg">
-              <div className={`bg-card p-4 sm:p-6 rounded-lg shadow-xl h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-                <h2 id="resume-form-heading" className="text-2xl font-headline font-semibold mb-6 text-primary">Craft Your Document</h2>
+              <div className={`bg-card p-3 sm:p-4 md:p-6 rounded-lg shadow-xl min-h-[400px] sm:min-h-[500px] md:h-[calc(100vh-120px)] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+                <h2 id="resume-form-heading" className="text-xl sm:text-2xl font-headline font-semibold mb-4 sm:mb-6 text-primary">Craft Your Document</h2>
                 <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
               </div>
             </section>
             
             <section aria-labelledby="resume-preview-heading" className="lg:col-span-5 xl:col-span-4 overflow-hidden rounded-lg flex flex-col">
               <div className={`bg-card p-2 sm:p-4 rounded-lg shadow-xl flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-primary/10 ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-                <h2 id="resume-preview-heading" className="text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
+                <h2 id="resume-preview-heading" className="text-xl sm:text-2xl font-headline font-semibold mb-4 text-primary text-center">Live Preview</h2>
                 <ResumePreview resumeData={resumeData} templateKey={resumeTemplate} />
               </div>
-              <div className={`mt-4 p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
-                <h3 className="text-lg font-semibold mb-3 text-center text-primary">Download Your Document</h3>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Button onClick={handleExportHTML} variant="outline" className="flex-1">
+              <div className={`mt-4 p-3 sm:p-4 bg-card rounded-lg shadow-md ${applyGlassmorphism ? 'glassmorphic-panel' : ''}`}>
+                <h3 className="text-base sm:text-lg font-semibold mb-3 text-center text-primary">Download Your Document</h3>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
+                  <Button onClick={handleExportHTML} variant="outline" className="flex-1 text-xs sm:text-sm">
                     <Download className="mr-2 h-4 w-4" />
                     Download HTML
                   </Button>
-                  <Button onClick={handleExportPDF} variant="outline" className="flex-1">
+                  <Button onClick={handleExportPDF} variant="outline" className="flex-1 text-xs sm:text-sm">
                     <Printer className="mr-2 h-4 w-4" />
                     Save as PDF
                   </Button>
@@ -203,13 +203,7 @@ export default function ResumeForgePage() {
           <TestimonialsSection />
         </div>
         
-        <div 
-          className={cn(
-            // Removed animation classes
-          )}
-        >
-          <AppFooter />
-        </div>
+        <AppFooter />
       </div>
     </div>
   );
